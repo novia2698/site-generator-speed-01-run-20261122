@@ -11,7 +11,7 @@
 
 import { setFlagsFromString } from 'node:v8';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { run } from './solve.js';
 
 // Keep the heap collector from interrupting the timed build: the reference
@@ -19,8 +19,13 @@ import { run } from './solve.js';
 // avoided GC pause is time saved.
 setFlagsFromString('--no-incremental-marking');
 
-const INPUT_PATH = process.env.MAKEFUN_INPUT ?? '/input/cases.json';
-const OUTPUT_PATH = process.env.MAKEFUN_OUTPUT ?? '/output/answers.json';
+// Outside a container the harness points these at temp directories; inside
+// one they are /input and /output. (The names matter: MAKEFUN_INPUT_DIR and
+// MAKEFUN_OUTPUT_DIR, not the shorter forms.)
+const INPUT_DIR = process.env.MAKEFUN_INPUT_DIR ?? '/input';
+const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const INPUT_PATH = join(INPUT_DIR, 'cases.json');
+const OUTPUT_PATH = join(OUTPUT_DIR, 'answers.json');
 
 function main(): void {
   const raw = readFileSync(INPUT_PATH, 'utf8');
