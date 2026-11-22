@@ -10,7 +10,8 @@
 // the case list is read once and answered in place.
 
 import { setFlagsFromString } from 'node:v8';
-import { readFileSync, writeFileSync, mkdirSync, dirname } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { run } from './solve.js';
 
 // Keep the heap collector from interrupting the timed build: the reference
